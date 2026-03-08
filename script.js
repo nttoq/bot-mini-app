@@ -1,27 +1,40 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini App</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-</head>
-<body>
+const tg = window.Telegram.WebApp;
 
-    <!-- Аватарка сверху -->
-    <div class="avatar-container">
-        <!-- По умолчанию стоит заглушка, JS заменит её на реальное фото -->
-        <img id="user-avatar" src="media/photo.jpg" alt="Avatar" class="avatar">
-    </div>
+// Сообщаем телеграму, что приложение готово и разворачиваем его
+tg.ready();
+tg.expand();
 
-    <!-- Модальное окно -->
-    <div id="photo-modal" class="modal">
-        <span class="close-btn">&times;</span>
-        <!-- Картинка в модальном окне тоже обновится -->
-        <img id="modal-avatar" class="modal-content" src="media/photo.jpg" alt="Full Avatar">
-    </div>
+// --- ЛОГИКА МОДАЛЬНОГО ОКНА ---
+const modal = document.getElementById('photo-modal');
+const avatarImg = document.getElementById('avatar-trigger');
+const closeBtn = document.querySelector('.close-btn');
 
-    <script src="script.js"></script>
-</body>
-</html>
+// Открыть
+avatarImg.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+        modal.classList.remove('closing');
+    });
+});
+
+// Закрыть
+function closeModal() {
+    if (!modal.classList.contains('active')) return;
+    
+    modal.classList.add('closing');
+    modal.classList.remove('active');
+
+    setTimeout(() => {
+        modal.classList.remove('closing');
+        modal.style.display = 'none';
+    }, 300);
+}
+
+closeBtn.addEventListener('click', closeModal);
+
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        closeModal();
+    }
+});
