@@ -1,22 +1,27 @@
-// Инициализация объекта WebApp
-const tg = window.Telegram.WebApp;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
 
-// Элемент для вывода ID
-const userDisplay = document.getElementById('user-display');
+    <!-- Аватарка сверху -->
+    <div class="avatar-container">
+        <!-- По умолчанию стоит заглушка, JS заменит её на реальное фото -->
+        <img id="user-avatar" src="media/photo.jpg" alt="Avatar" class="avatar">
+    </div>
 
-// Получаем данные пользователя
-const user = tg.initDataUnsafe.user;
+    <!-- Модальное окно -->
+    <div id="photo-modal" class="modal">
+        <span class="close-btn">&times;</span>
+        <!-- Картинка в модальном окне тоже обновится -->
+        <img id="modal-avatar" class="modal-content" src="media/photo.jpg" alt="Full Avatar">
+    </div>
 
-if (user && user.id) {
-    // Если пользователь открыл из Telegram, показываем его ID
-    userDisplay.textContent = `Ваш ID: ${user.id}`;
-    
-    // Сообщаем телеграму, что приложение готово
-    tg.ready();
-    
-    // Опционально: развернуть на весь экран
-    tg.expand(); 
-} else {
-    // Если открыто не в Telegram (для тестов в браузере)
-    userDisplay.textContent = "Откройте через Telegram";
-}
+    <script src="script.js"></script>
+</body>
+</html>
